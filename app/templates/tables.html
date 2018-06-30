@@ -107,7 +107,7 @@
                         <tbody>
                           {%for persona in top %}
                           <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">{{loop.index}}</th>
                             <td>{{persona[0]}}</td>
                             <td>{{persona[1]}}</td>
                             <td>{{persona[2]}}</td>
@@ -141,7 +141,7 @@
                         <tbody>
                           {%for mesa in Topventa %}
                           <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">{{loop.index}}</th>
                             <td>{{mesa[0]}}</td>
                             <td>{{mesa[1]}}</td>
                           </tr>
@@ -160,23 +160,27 @@
                       </div>
                     </div>
                     <div class="card-header d-flex align-items-center">
-                      <h3 class="h4">Top de mesas utilizadas</h3>
+                      <h3 class="h4">Top Ventas mas caras</h3>
                     </div>
                     <div class="card-body">
                       <table class="table table-striped">
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Venta</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Mesa</th>
                             <th>Ingreso por venta</th>
                           </tr>
                         </thead>
                         <tbody>
                           {%for mesa in Topprecio %}
                           <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{mesa[2]}}</td>
+                            <td>{{mesa[3]}}</td>
                             <td>{{mesa[0]}}</td>
-                            <td>{{mesa[1]}}</td>
+                            <td>${{mesa[1]}}</td>
                           </tr>
                           {%endfor%}
                         </tbody>

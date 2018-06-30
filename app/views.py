@@ -26,10 +26,10 @@ def login():
 
 	sql ="""
 	SELECT nombre,apellido,cont
-	FROM (select count(fecha,hora) AS cont, nombre, apellido
+	FROM (select count(hora) AS cont, nombre, apellido
 	FROM pedidos, empleados
 	WHERE empleados.rut = pedidos.rut_empleado
-	GROUP BY empleados.rut)AS holi
+	GROUP BY empleados.rut,fecha,hora)AS holi
 	ORDER BY(cont) DESC;
 	"""
 	print sql
@@ -37,15 +37,16 @@ def login():
 	Top = cur.fetchall()
 
 	sql ="""
-	SELECT num_mesa,clientes_totales
-	From(select SUM(cant_atendida) as clientes_totales,num_mesa
-	FROM pedidos
-	GROUP BY num_mesa ) as holi
-	order by (clientes_totales) desc;
+	SELECT num_mesa,valores_totales,fecha,hora
+	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales,num_mesa,fecha, hora
+	FROM pedidos,menus
+	WHERE pedidos.idmenu = menus.id_menu
+	GROUP BY num_mesa ,fecha,hora) as holi
+	order by (valores_totales) desc;
 	"""
 	print sql
 	cur.execute(sql)
-	Topprecio = cur.fetchall()
+	Topprecio= cur.fetchall()
 
 	alerta=""
 
