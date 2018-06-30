@@ -56,7 +56,7 @@ sql="""
 CREATE TABLE pedidos
 			(cant_atendida integer,
 			fecha varchar(40),
-            hora varchar(40)
+            hora varchar(40),
 			rut_empleado varchar(10),
 			num_mesa integer,
 			idmenu varchar(255),
@@ -71,7 +71,7 @@ sql="""
 CREATE TABLE reservas
 			(id_mesa integer,
 			fecha varchar(110),
-            hora varchar(40)
+            hora varchar(40),
             FOREIGN key( id_mesa) REFERENCES mesas(numero),
 			PRIMARY KEY( id_mesa,fecha,hora)
 			);

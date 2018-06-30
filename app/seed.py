@@ -147,27 +147,27 @@ cur.execute(sql)
 
 sql ="""
  INSERT INTO proveedores (nombre,rut_empresa,cant_mercaderia,idproducto)
- VALUES ('Cokecompany','6006000','18','10');
+ VALUES ('Cokecompany','6006000','18','6');
 """
 
 cur.execute(sql)
 
 sql ="""
  INSERT INTO proveedores (nombre,rut_empresa,cant_mercaderia,idproducto)
- VALUES ('ccu','6006001','180','9');
+ VALUES ('ccu','6006001','180','5');
 """
 cur.execute(sql)
 
 sql ="""
  INSERT INTO proveedores (nombre,rut_empresa,cant_mercaderia,idproducto)
- VALUES ('pjspa','6006002','182','11');
+ VALUES ('pjspa','6006002','182','7');
 """
 cur.execute(sql)
 
 
 sql ="""
  INSERT INTO proveedores (nombre,rut_empresa,cant_mercaderia,idproducto)
- VALUES ('saleros salsita','6006006','187888','12');
+ VALUES ('saleros salsita','6006006','187888','8');
 """
 cur.execute(sql)
 
@@ -179,12 +179,12 @@ sql ="""
 cur.execute(sql)
 
 sql="""
- INSERT INTO llevan (producto ,menu) VALUES ('11','colacion')
+ INSERT INTO llevan (producto ,menu) VALUES ('7','colacion')
 """
 cur.execute(sql)
 
 sql="""
- INSERT INTO llevan (producto ,menu) VALUES ('9','colacion')
+ INSERT INTO llevan (producto ,menu) VALUES ('5','colacion')
 """
 cur.execute(sql)
 
@@ -195,7 +195,7 @@ sql ="""
 cur.execute(sql)
 
 sql="""
- INSERT INTO llevan (producto ,menu) VALUES ('9','pepi')
+ INSERT INTO llevan (producto ,menu) VALUES ('5','pepi')
 """
 cur.execute(sql)
 
@@ -206,48 +206,48 @@ sql ="""
 cur.execute(sql)
 
 sql="""
- INSERT INTO llevan (producto ,menu) VALUES ('11','picza')
+ INSERT INTO llevan (producto ,menu) VALUES ('7','picza')
 """
 cur.execute(sql)
 
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('3','10/9/2018' , '20:30','19280181-8','37','picza');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('3','10/9/2018' , '20:30','19280181-8','10','picza');
 """
 cur.execute(sql)
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('3','10/9/2018','20:30','19280181-8','37','pepi');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('3','10/9/2018','20:30','19280181-8','10','pepi');
 """
 cur.execute(sql)
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('4','10/9/2018','22:30','12345678-9','40','picza');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('4','10/9/2018','22:30','12345678-9','11','picza');
 """
 cur.execute(sql)
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('5','10/9/2018','22:30','12345678-8','38','picza');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('5','10/9/2018','22:30','12345678-8','12','picza');
 """
 cur.execute(sql)
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('7','10/9/2018','22:51','12345678-8','42','pepi');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('7','10/9/2018','19:00','12345678-8','18','pepi');
 """
 cur.execute(sql)
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('3','10/9/2018','22:51','12345678-5','39','pepi');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('3','10/9/2018','17:00','12345678-5','15','pepi');
 """
 cur.execute(sql)
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('3','10/9/2018','22:51','12345678-5','39','colacion');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('3','10/9/2018','13:00','12345678-5','15','colacion');
 """
 cur.execute(sql)
 sql="""
-INSERT INTO pedidos (cant_atendida , fecha_id , rut_empleado , num_mesa ,
-			idmenu ) VALUES ('3','10/9/2018','22:51','12345678-5','38','colacion');
+INSERT INTO pedidos (cant_atendida , fecha, hora , rut_empleado , num_mesa ,
+			idmenu ) VALUES ('3','10/9/2018','14:00','12345678-5','12','colacion');
 """
 cur.execute(sql)
 
