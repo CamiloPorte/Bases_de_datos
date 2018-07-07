@@ -83,6 +83,51 @@
               <li class="breadcrumb-item active">Forms</li>
             </div>
           </ul>
+        </header>
+        <!-- Dashboard Counts Section-->
+        <section class="dashboard-counts no-padding-bottom">
+          <div class="container-fluid">
+            <div class="row bg-white has-shadow">
+              <!-- Item -->
+              <div class="col-xl-3 col-sm-6">
+                <div class="item d-flex align-items-center">
+                  <div class="icon bg-violet"><i class="icon-user"></i></div>
+                  <div class="title"><span>Cantidad de <br>Empresas</span>
+                    <div class="progress">
+                      <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-violet"></div>
+                    </div>
+                  </div>
+                  <div class="number"><strong>{{numeroempresas}}<!--aquí va la referencia {{numeroempresas}}--></strong></div>
+                </div>
+              </div>
+              <!-- Item -->
+              <div class="col-xl-3 col-sm-6">
+                <div class="item d-flex align-items-center">
+                  <div class="icon bg-red"><i class="icon-padnote"></i></div>
+                  <div class="title"><span>Cantidad de <br>Chequeras</span>
+                    <div class="progress">
+                      <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-red"></div>
+                    </div>
+                  </div>
+                  <div action = "numerochequeras/{{mail}}" class="number"><strong> {{numerochequeras}}<!--aquí va la referencia {{numerochequeras}}--></strong></div>
+                </div>
+              </div>
+              <!-- Item -->
+              <div class="col-xl-3 col-sm-6">
+                <div class="item d-flex align-items-center">
+                  <div class="icon bg-green"><i class="icon-bill"></i></div>
+                  <div class="title"><span>Cantidad de <br>Cheques</span>
+                    <div class="progress">
+                      <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-green"></div>
+                    </div>
+                  </div>
+                  <div class="number"><strong>{{numerocheques}}<!--aquí va la referencia {{numerocheques}}--></strong></div>
+                </div>
+              </div>
+              <!-- Item -->
+            </div>
+          </div>
+        </section>
           <!-- Forms Section-->
           <section class="forms">
             <div class="container-fluid">

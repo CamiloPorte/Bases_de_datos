@@ -15,9 +15,10 @@ def login():
 
 	sql ="""
 	SELECT num_mesa,clientes_totales
-	From(select SUM(cant_atendida) as clientes_totales,num_mesa
-	FROM pedidos
-	GROUP BY num_mesa ) as holi
+	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM pedidos , mesas
+	WHERE mesas.numero = pedidos.num_mesa
+	GROUP BY num_mesa, hora) as holi
 	order by (clientes_totales) desc;
 	"""
 	print sql
@@ -48,6 +49,18 @@ def login():
 	Top = cur.fetchall()
 
 	sql ="""
+	SELECT nombre,apellido,cont
+	FROM (select count(DISTINCT fecha) AS cont, nombre, apellido
+	FROM pedidos, empleados
+	WHERE empleados.rut = pedidos.rut_empleado
+	GROUP BY empleados.rut,fecha)AS holi
+	ORDER BY(cont) DESC;
+	"""
+	print sql
+	cur.execute(sql)
+	topAsistencia = cur.fetchall()
+
+	sql ="""
 	SELECT num_mesa,valores_totales,fecha,hora
 	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales,num_mesa,fecha, hora
 	FROM pedidos,menus
@@ -69,13 +82,97 @@ def login():
 	"""
 	print sql
 	cur.execute(sql)
-	tophorasing= cur.fetchall()
+	tophorasing = cur.fetchall()
 
 	alerta=""
 
 	sql="""SELECT * from empleados"""
 	cur.execute(sql)
 	empleados = cur.fetchall()
+
+	sql ="""
+	SELECT SUM (clientes_totales)
+	FROM ( SELECT num_mesa,clientes_totales
+	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM pedidos , mesas
+	WHERE mesas.numero = pedidos.num_mesa
+	GROUP BY num_mesa, hora) as holi)as preotriano;
+	"""
+	print sql
+	cur.execute(sql)
+	numeroClientes = cur.fetchone()
+
+	sql ="""
+	SELECT SUM(valores_totales)
+	FROM (
+	SELECT valores_totales,hora
+	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM pedidos,menus
+	WHERE pedidos.idmenu = menus.id_menu
+	GROUP BY hora) as holi)
+	AS titoFernandes;
+	"""
+	print sql
+	cur.execute(sql)
+	ingresoTotal = cur.fetchone()
+
+	sql ="""
+	SELECT SUM(valores_totales)
+	FROM (
+	SELECT valores_totales,hora
+	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM pedidos,menus,mesas
+	WHERE pedidos.idmenu = menus.id_menu
+	AND mesas.numero = pedidos.num_mesa
+	and mesas.zona_fumadores = 'True'
+	GROUP BY hora) as holi)
+	AS titoFernandes;
+	"""
+	print sql
+	cur.execute(sql)
+	ingresoFumadores = cur.fetchone()
+	sql ="""
+	SELECT SUM(valores_totales)
+	FROM (
+	SELECT valores_totales,hora
+	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM pedidos,menus,mesas
+	WHERE pedidos.idmenu = menus.id_menu
+	AND mesas.numero = pedidos.num_mesa
+	and mesas.zona_fumadores = 'false'
+	GROUP BY hora) as holi)
+	AS titoFernandes;
+	"""
+	print sql
+	cur.execute(sql)
+	ingresoNoFumadores = cur.fetchone()
+
+	sql ="""
+	SELECT SUM (clientes_totales)
+	FROM ( SELECT num_mesa,clientes_totales
+	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM pedidos , mesas
+	WHERE mesas.numero = pedidos.num_mesa
+	AND zona_fumadores = 'false'
+	GROUP BY num_mesa, hora) as holi)as preotriano;
+	"""
+	print sql
+	cur.execute(sql)
+	numeroClientesNofumadores = cur.fetchone()
+
+
+	sql ="""
+	SELECT SUM (clientes_totales)
+	FROM ( SELECT num_mesa,clientes_totales
+	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM pedidos , mesas
+	WHERE mesas.numero = pedidos.num_mesa
+	AND zona_fumadores = 'True'
+	GROUP BY num_mesa, hora) as holi)as preotriano;
+	"""
+	print sql
+	cur.execute(sql)
+	numeroClientesfumadores = cur.fetchone()
 
 	if request.method == "POST":
 		rut = request.form["loginrut"]
@@ -105,7 +202,11 @@ def login():
 			alerta="contrasena invalida"
 			return render_template("login.html", alerta = alerta )
 		else :
-			return render_template("tables.html", empleados = empleados , administrador=admin , name = nombre, top = Top, Topventa=Topventa,Topprecio=Topprecio,tophoras=tophorascompras,tophorasing=tophorasing)
+			return render_template("tables.html", empleados = empleados , administrador=admin , name = nombre,
+			 top = Top, Topventa=Topventa,Topprecio=Topprecio,tophoras=tophorascompras,
+			 tophorasing=tophorasing,topAsistencia=topAsistencia,rut= rut,numeroClientes=numeroClientes,
+			 ingresoTotal = ingresoTotal,ingresoFumadores=ingresoFumadores,ingresoNoFumadores=ingresoNoFumadores,
+			 numeroClientesfumadores=numeroClientesfumadores,numeroClientesNofumadores=numeroClientesNofumadores)
 	else:
 
 		return render_template("login.html")
@@ -183,6 +284,22 @@ def actualizacion():
 	Top = cur.fetchall()
 	return render_template("tables.html",top = Top)
 
-@app.route('/test', methods=["POST","GET"])
-def test():
-	return render_template("megazord.html")
+@app.route('/test/<rut>', methods=["POST","GET"])
+def test(rut):
+
+	sql="""
+	SELECT admin
+	from empleados
+	where empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	admin = cur.fetchone()
+
+	sql="""SELECT nombre,apellido
+	from empleados
+	where empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	nombre = cur.fetchone()
+
+	return render_template("forms.html",administrador=admin,name = nombre)
