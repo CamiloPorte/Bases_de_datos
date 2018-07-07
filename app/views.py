@@ -25,6 +25,17 @@ def login():
 	Topventa = cur.fetchall()
 
 	sql ="""
+	SELECT hora,cont
+	FROM (select COUNT( DISTINCT rut_empleado) AS cont, hora
+	FROM pedidos
+	GROUP BY hora)AS holi
+	ORDER BY(cont) DESC;
+	"""
+	print sql
+	cur.execute(sql)
+	tophorascompras = cur.fetchall()
+
+	sql ="""
 	SELECT nombre,apellido,cont
 	FROM (select count(hora) AS cont, nombre, apellido
 	FROM pedidos, empleados
@@ -47,6 +58,18 @@ def login():
 	print sql
 	cur.execute(sql)
 	Topprecio= cur.fetchall()
+
+	sql ="""
+	SELECT valores_totales,hora
+	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM pedidos,menus
+	WHERE pedidos.idmenu = menus.id_menu
+	GROUP BY hora) as holi
+	order by (valores_totales) desc;
+	"""
+	print sql
+	cur.execute(sql)
+	tophorasing= cur.fetchall()
 
 	alerta=""
 
@@ -82,7 +105,7 @@ def login():
 			alerta="contrasena invalida"
 			return render_template("login.html", alerta = alerta )
 		else :
-			return render_template("tables.html", empleados = empleados , administrador=admin , name = nombre, top = Top, Topventa=Topventa,Topprecio=Topprecio)
+			return render_template("tables.html", empleados = empleados , administrador=admin , name = nombre, top = Top, Topventa=Topventa,Topprecio=Topprecio,tophoras=tophorascompras,tophorasing=tophorasing)
 	else:
 
 		return render_template("login.html")
@@ -162,4 +185,4 @@ def actualizacion():
 
 @app.route('/test', methods=["POST","GET"])
 def test():
-	return render_template("charts.html")
+	return render_template("megazord.html")

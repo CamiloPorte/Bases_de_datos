@@ -57,7 +57,7 @@
               </ul>
             </li>
             <li> <a href="tables.html"> <i class="icon-grid"></i>Menu </a></li>
-            <li> <a href="charts.html"> <i class="fa fa-bar-chart"></i>Venta </a></li>
+            <li> <a href="/test"> <i class="fa fa-bar-chart"></i>Venta </a></li>
             <li> <a href="/registrarse"> <i class="icon-interface-windows"></i>Registar nuevo empleado</a></li>
     <!--      </ul><span class="heading">Extras</span>
           <ul class="list-unstyled">
@@ -92,25 +92,56 @@
                       </div>
                     </div>
                     <div class="card-header d-flex align-items-center">
-                      <h3 class="h4">Top Vendedores</h3>
+                      <h3 class="h4">Top ingreso por Hora</h3>
                     </div>
                     <div class="card-body">
                       <table class="table">
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Ventas</th>
+                            <th>Ingreso por hora.</th>
+                            <th>Hora.</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {%for persona in top %}
+                          {%for persona in tophorasing %}
+                          <tr>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>${{persona[0]}}</td>
+                            <td>{{persona[1]}}</td>
+                          </tr>
+                          {%endfor%}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Top en Ventas por Hora</h3>
+                    </div>
+                    <div class="card-body">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Hora</th>
+                            <th>Cantida de Ventas.</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {%for persona in tophoras %}
                           <tr>
                             <th scope="row">{{loop.index}}</th>
                             <td>{{persona[0]}}</td>
                             <td>{{persona[1]}}</td>
-                            <td>{{persona[2]}}</td>
                           </tr>
                           {%endfor%}
                         </tbody>
@@ -197,61 +228,32 @@
                       </div>
                     </div>
                     <div class="card-header d-flex align-items-center">
-                      <h3 class="h4">Compact Table</h3>
+                      <h3 class="h4">Top Vendedores</h3>
                     </div>
                     <div class="card-body">
-                      <table class="table table-striped table-sm">
+                      <table class="table">
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Ventas</th>
                           </tr>
                         </thead>
                         <tbody>
+                          {%for persona in top %}
                           <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{persona[0]}}</td>
+                            <td>{{persona[1]}}</td>
+                            <td>{{persona[2]}}</td>
                           </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter      </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">5</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">6</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter                                                                              </td>
-                          </tr>
+                          {%endfor%}
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
           </section>
           <!-- Page Footer-->
