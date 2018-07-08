@@ -81,60 +81,144 @@
             <li class="breadcrumb-item active">Estadisticas</li>
           </div>
         </ul>
-        <!-- Dashboard Counts Section-->
-        <section class="dashboard-counts no-padding-bottom">
+        <section class="dashboard-header">
           <div class="container-fluid">
-            <div class="row bg-white has-shadow">
-              <!-- Item -->
-              <div class="col-xl-3 col-sm-6">
-                <div class="item d-flex align-items-center">
+            <div class="row">
+              <!-- Statistics  -->
+             <div class="statistics col-lg-3 col-12">
+                <div class="statistic d-flex align-items-center bg-white has-shadow">
                   <div class="icon bg-red"><i class="icon-bill"></i></div>
-                  <div class="title"><span>Total ingresos <br>Fumadores</span></div>
-                  <strong>{%for numero in ingresoFumadores %} ${{numero}} {%endfor%}</strong>
+                  <div class="text"><strong>{%for numero in ingresoFumadores %} ${{numero}} {%endfor%}</strong><br><small>Total ingresos Fumadores</small></div>
                 </div>
-              </div>
-              <div class="col-xl-3 col-sm-6">
-                <div class="item d-flex align-items-center">
+                <div class="statistic d-flex align-items-center bg-white has-shadow">
                   <div class="icon bg-green"><i class="icon-bill"></i></div>
-                  <div class="title"><span>Total ingresos <br>No Fumadores</span></div>
-                  <strong>{%for numero in ingresoNoFumadores %} ${{numero}} {%endfor%}</strong>
+                  <div class="text"><strong>{%for numero in ingresoNoFumadores %} ${{numero}} {%endfor%}</strong><br><small>Total ingresos No Fumadores</small></div>
                 </div>
-              </div>
-              <!-- Item -->
-              <div class="col-xl-3 col-sm-6">
-                <div class="item d-flex align-items-center">
+                <div class="statistic d-flex align-items-center bg-white has-shadow">
                   <div class="icon bg-violet"><i class="icon-bill"></i></div>
-                  <div class="title"><span>Total de <br>ingresos</span></div>
-                  <strong> <br>{%for numero in ingresoTotal %} ${{numero}} {%endfor%}</strong>
+                  <div class="text"><strong>{%for numero in ingresoTotal %} ${{numero}} {%endfor%}</strong><br><small>Total de ingresos</small></div>
                 </div>
               </div>
-            </div>
-            <div class="row bg-white has-shadow">
-              <div class="col-xl-3 col-sm-6">
-                <div class="item d-flex align-items-center">
-                  <div class="icon bg-red"><i class="icon-user"></i></div>
-                  <div class="title"><span>Total clientes <br>Fumadores</span></div>
-                  <div class="number"><strong>{%for numero in numeroClientesfumadores %} {{numero}} {%endfor%}</strong></div>
-                </div>
-            </div>
-              <div class="col-xl-3 col-sm-6">
-                <div class="item d-flex align-items-center">
-                  <div class="icon bg-green"><i class="icon-user"></i></div>
-                  <div class="title"><span>Total clientes <br>No Fumadores</span></div>
-                  <div class="number"><strong>{%for numero in numeroClientesNofumadores %} {{numero}} {%endfor%}</strong></div>
-                </div>
-              </div>
-              <!-- Item -->
-              <div class="col-xl-3 col-sm-6">
-                <div class="item d-flex align-items-center">
-                  <div class="icon bg-violet"><i class="icon-user"></i></div>
-                  <div class="title"><span>Total de <br>Clientes</span></div>
-                  <div class="number"><strong> {%for numero in numeroClientes%} {{numero}} {%endfor%}</strong></div>
-                </div>
-              </div>
-              <!-- Item -->
+              <div class="statistics col-lg-3 col-12">
+                 <div class="statistic d-flex align-items-center bg-white has-shadow">
+                   <div class="icon bg-red"><i class="icon-user"></i></div>
+                   <div class="text"><strong>{%for numero in numeroClientesfumadores %} {{numero}} {%endfor%}</strong><br><small>Total clientes Fumadores</small></div>
+                 </div>
+                 <div class="statistic d-flex align-items-center bg-white has-shadow">
+                   <div class="icon bg-green"><i class="icon-user"></i></div>
+                   <div class="text"><strong>{%for numero in numeroClientesNofumadores %} {{numero}} {%endfor%}</strong><br><small>Total clientes No Fumadores</small></div>
+                 </div>
+                 <div class="statistic d-flex align-items-center bg-white has-shadow">
+                   <div class="icon bg-violet"><i class="icon-user"></i></div>
+                   <div class="text"><strong>{%for numero in numeroClientes%} {{numero}} {%endfor%}</strong><br><small>Total de Clientes</small></div>
+                 </div>
+               </div>
             </div>
           </div>
+        </section>
+        <section class="forms">
+          <div class="container-fluid">
+            <div class="row">
+              <!-- Basic Form-->
+              <div class="col-lg-6">
+                <div class="card">
+                  <div class="card-close">
+                    <div class="dropdown">
+                      <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                      <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                    </div>
+                  </div>
+                  <div class="card-header d-flex align-items-center">
+                    <h3 class="h4">Busqueda de reservas</h3>
+                  </div>
+                  <div class="card-body">
+                    <p>ingrese hora y fecha en el formato dado para buscar las reservas en esas fechas </p>
+                    <form method="POST" action="/busqueda" anctype="multipart/form-data">
+                  <fieldset>
+                  <!-- Form Name -->
+                  <legend>Rellene todos los campos</legend>
+
+                  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Fecha</label>
+                    <div class="col-md-4">
+                    <input id="fecha" name="fecha" type="text" placeholder="AAAA/M/DD" class="form-control input-md">
+                    <span class="help-block">ej: 2018/4/16</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Hora</label>
+                    <div class="col-md-4">
+                    <input id="hora" name="hora" type="text" placeholder="HH:MM" class="form-control input-md">
+                    <span class="help-block">ej: 20:30</span>
+                    </div>
+                  </div>
+                    <div class="form-group row">
+                      <div class="col-sm-9 offset-sm-3">
+                        <input type="button" value="Buscar" class="btn btn-primary" onclick="msg() ">
+                      </div>
+                      <script>
+                      function msg() {
+                        alert({{Resultado}});
+                      }
+                      </script>
+                    </div>
+                  </fieldset>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="card">
+                  <div class="card-close">
+                    <div class="dropdown">
+                      <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                      <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                    </div>
+                  </div>
+                  <div class="card-header d-flex align-items-center">
+                    <h3 class="h4">Mercaderia recibida</h3>
+                  </div>
+                  <div class="card-body">
+                    <p>Ingrese mes y año para obtener la mercaderia recibida en ese mes específico </p>
+                    <form method="POST" action="/busqueda" anctype="multipart/form-data">
+                  <fieldset>
+                  <!-- Form Name -->
+                  <legend>Rellene todos los campos</legend>
+
+                  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Fecha</label>
+                    <div class="col-md-4">
+                    <input id="ano" name="ano" type="text" placeholder="AAAA" class="form-control input-md">
+                    <span class="help-block">ej: 2018</span>
+                    </div>
+                    <div class="col-md-4">
+                    <input id="mes" name="mes" type="text" placeholder="M" class="form-control input-md">
+                    <span class="help-block">ej: 4</span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                  <input id="producto" name="producto" type="text" placeholder="AAAA/M/DD" class="form-control input-md">
+                  <span class="help-block">ej: Pizza</span>
+                  </div>
+                  </div>
+                    <div class="form-group row">
+                      <div class="col-sm-9 offset-sm-3">
+                        <input type="button" value="Buscar" class="btn btn-primary" onclick="msg() ">
+                      </div>
+                      <script>
+                      function msg() {
+                        alert({{merca}});
+                      }
+                      </script>
+                    </div>
+                  </fieldset>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
         </section>
           <section class="tables">
             <div class="container-fluid">

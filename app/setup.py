@@ -88,6 +88,18 @@ CREATE TABLE llevan
 			);
 """
 cur.execute(sql)
+
+sql="""
+CREATE TABLE traen
+			(producto integer,
+            cantidad integer,
+            fecha varchar(150),
+            FOREIGN key (producto) REFERENCES productos(id_producto),
+            FOREIGN key (menu) REFERENCES menus(id_menu),
+			PRIMARY KEY( producto ,menu)
+			);
+"""
+cur.execute(sql)
 conn.commit()
 cur.close()
 conn.close()

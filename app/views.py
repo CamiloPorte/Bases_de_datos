@@ -15,11 +15,11 @@ def login():
 
 	sql ="""
 	SELECT num_mesa,clientes_totales
-	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM(select SUM(capacidad) as clientes_totales,num_mesa
 	FROM pedidos , mesas
 	WHERE mesas.numero = pedidos.num_mesa
 	GROUP BY num_mesa, hora) as holi
-	order by (clientes_totales) desc;
+	ORDER BY (clientes_totales) desc;
 	"""
 	print sql
 	cur.execute(sql)
@@ -62,11 +62,11 @@ def login():
 
 	sql ="""
 	SELECT num_mesa,valores_totales,fecha,hora
-	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales,num_mesa,fecha, hora
+	FROM(select SUM(cant_atendida*menus.precio_menu) as valores_totales,num_mesa,fecha, hora
 	FROM pedidos,menus
 	WHERE pedidos.idmenu = menus.id_menu
 	GROUP BY num_mesa ,fecha,hora) as holi
-	order by (valores_totales) desc;
+	ORDER BY (valores_totales) desc;
 	"""
 	print sql
 	cur.execute(sql)
@@ -74,11 +74,11 @@ def login():
 
 	sql ="""
 	SELECT valores_totales,hora
-	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
 	FROM pedidos,menus
 	WHERE pedidos.idmenu = menus.id_menu
 	GROUP BY hora) as holi
-	order by (valores_totales) desc;
+	ORDER BY (valores_totales) desc;
 	"""
 	print sql
 	cur.execute(sql)
@@ -86,14 +86,14 @@ def login():
 
 	alerta=""
 
-	sql="""SELECT * from empleados"""
+	sql="""SELECT * FROM empleados"""
 	cur.execute(sql)
 	empleados = cur.fetchall()
 
 	sql ="""
 	SELECT SUM (clientes_totales)
 	FROM ( SELECT num_mesa,clientes_totales
-	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM(select SUM(capacidad) as clientes_totales,num_mesa
 	FROM pedidos , mesas
 	WHERE mesas.numero = pedidos.num_mesa
 	GROUP BY num_mesa, hora) as holi)as preotriano;
@@ -106,11 +106,11 @@ def login():
 	SELECT SUM(valores_totales)
 	FROM (
 	SELECT valores_totales,hora
-	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
 	FROM pedidos,menus
 	WHERE pedidos.idmenu = menus.id_menu
 	GROUP BY hora) as holi)
-	AS titoFernandes;
+	AS titoFernANDes;
 	"""
 	print sql
 	cur.execute(sql)
@@ -120,13 +120,13 @@ def login():
 	SELECT SUM(valores_totales)
 	FROM (
 	SELECT valores_totales,hora
-	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
 	FROM pedidos,menus,mesas
 	WHERE pedidos.idmenu = menus.id_menu
 	AND mesas.numero = pedidos.num_mesa
-	and mesas.zona_fumadores = 'True'
+	AND mesas.zona_fumadores = 'True'
 	GROUP BY hora) as holi)
-	AS titoFernandes;
+	AS titoFernANDes;
 	"""
 	print sql
 	cur.execute(sql)
@@ -135,13 +135,13 @@ def login():
 	SELECT SUM(valores_totales)
 	FROM (
 	SELECT valores_totales,hora
-	From(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
+	FROM(select SUM(cant_atendida*menus.precio_menu) as valores_totales, hora
 	FROM pedidos,menus,mesas
 	WHERE pedidos.idmenu = menus.id_menu
 	AND mesas.numero = pedidos.num_mesa
-	and mesas.zona_fumadores = 'false'
+	AND mesas.zona_fumadores = 'false'
 	GROUP BY hora) as holi)
-	AS titoFernandes;
+	AS titoFernANDes;
 	"""
 	print sql
 	cur.execute(sql)
@@ -150,7 +150,7 @@ def login():
 	sql ="""
 	SELECT SUM (clientes_totales)
 	FROM ( SELECT num_mesa,clientes_totales
-	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM(select SUM(capacidad) as clientes_totales,num_mesa
 	FROM pedidos , mesas
 	WHERE mesas.numero = pedidos.num_mesa
 	AND zona_fumadores = 'false'
@@ -164,7 +164,7 @@ def login():
 	sql ="""
 	SELECT SUM (clientes_totales)
 	FROM ( SELECT num_mesa,clientes_totales
-	From(select SUM(capacidad) as clientes_totales,num_mesa
+	FROM(select SUM(capacidad) as clientes_totales,num_mesa
 	FROM pedidos , mesas
 	WHERE mesas.numero = pedidos.num_mesa
 	AND zona_fumadores = 'True'
@@ -178,17 +178,17 @@ def login():
 		rut = request.form["loginrut"]
 		password = request.form["loginPassword"]
 
-		sql="""SELECT rut,password from empleados where empleados.rut = '%s'
+		sql="""SELECT rut,password FROM empleados WHERE empleados.rut = '%s'
 		"""%(rut)
 		cur.execute(sql)
 		resultados = cur.fetchone()
 
-		sql="""SELECT admin from empleados where empleados.rut = '%s'
+		sql="""SELECT admin FROM empleados WHERE empleados.rut = '%s'
 		"""%(rut)
 		cur.execute(sql)
 		admin = cur.fetchone()
 
-		sql="""SELECT nombre,apellido from empleados where empleados.rut = '%s'
+		sql="""SELECT nombre,apellido FROM empleados WHERE empleados.rut = '%s'
 		"""%(rut)
 		cur.execute(sql)
 		nombre = cur.fetchone()
@@ -214,13 +214,13 @@ def login():
 @app.route('/registrarse', methods=["POST","GET"])
 def registrarse():
 
-	sql="""SELECT nombre,apellido from empleados,pedidos where empleado.rut = pedidos.rut_empleado and count(cant_atendida,fecha_id,rut_empleado,num_mesa,idmenu) group by empleados.rut"""
+	sql="""SELECT nombre,apellido FROM empleados,pedidos WHERE empleado.rut = pedidos.rut_empleado AND count(cant_atendida,fecha_id,rut_empleado,num_mesa,idmenu) GROUP BY empleados.rut"""
 
-	sql="""SELECT * from empleados"""
+	sql="""SELECT * FROM empleados"""
 	cur.execute(sql)
 	empleados = cur.fetchall()
 
-	sql="""SELECT nombre, apellido from empleados"""
+	sql="""SELECT nombre, apellido FROM empleados"""
 	cur.execute(sql)
 	nombres = cur.fetchone()
 	alerta=""
@@ -230,7 +230,7 @@ def registrarse():
 		nombre=request.form["nombre"]
 		apellido=request.form["apellido"]
 
-		sql="""SELECT nombre,apellido from empleados where empleados.rut = '%s'
+		sql="""SELECT nombre,apellido FROM empleados WHERE empleados.rut = '%s'
 		"""%(rut)
 		cur.execute(sql)
 		nombre = cur.fetchone()
@@ -241,7 +241,7 @@ def registrarse():
 			alerta="Rut invalido vuelva ingresar"
 			return render_template("register.html", alerta = alerta)
 
-		sql="""SELECT * from empleados where empleados.rut ='%s';
+		sql="""SELECT * FROM empleados WHERE empleados.rut ='%s';
 		"""%(rut)
 		cur.execute(sql)
 		resultadoempleado = cur.fetchall()
@@ -252,7 +252,7 @@ def registrarse():
 			"""%(rut,nombre,apellido,password)
 			cur.execute(sql)
 
-			sql="""SELECT nombre,apellido from empleados where empleados.rut = '%s'
+			sql="""SELECT nombre,apellido FROM empleados WHERE empleados.rut = '%s'
 			"""%(rut)
 			cur.execute(sql)
 			nombre = cur.fetchone()
@@ -289,17 +289,52 @@ def test(rut):
 
 	sql="""
 	SELECT admin
-	from empleados
-	where empleados.rut = '%s'
+	FROM empleados
+	WHERE empleados.rut = '%s'
 	"""%(rut)
 	cur.execute(sql)
 	admin = cur.fetchone()
 
 	sql="""SELECT nombre,apellido
-	from empleados
-	where empleados.rut = '%s'
+	FROM empleados
+	WHERE empleados.rut = '%s'
 	"""%(rut)
 	cur.execute(sql)
 	nombre = cur.fetchone()
 
 	return render_template("forms.html",administrador=admin,name = nombre)
+
+@app.route('/busqueda', methods=["POST","GET"])
+def busqueda():
+	if request.method == "POST":
+		fecha=request.form["fecha"]
+		hora=request.form["hora"]
+
+		sql="""SELECT *
+		FROM reservas
+		WHERE reservas.fecha = '%s'
+		AND reservas.horas = '%s'
+		"""%(fecha,hora)
+		cur.execute(sql)
+		resultado = cur.fetchall()
+
+	return render_template(resultado=resultado)
+
+@app.route('/mercaderia', methods=["POST","GET"])
+def mercaderia():
+	if request.method == "POST":
+
+		ano=request.form["ano"]
+		mes=request.form["mes"]
+		producto=request.form["producto"]
+		fecha=ano + '/'+ mes
+
+		sql="""SELECT *
+		FROM traen
+		WHERE traen.fecha = '%s'
+		AND traen.producto = '%s'
+		"""%(fecha)
+		cur.execute(sql)
+		merca = cur.fetchall()
+
+	return render_template(merca=merca)
