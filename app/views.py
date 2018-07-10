@@ -453,6 +453,21 @@ def registrarse():
 @app.route('/tables/<rut>',methods=["POST","GET"])
 def home(rut):
 
+	sql="""
+	SELECT admin
+	FROM empleados
+	WHERE empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	admin = cur.fetchone()
+
+	sql="""SELECT nombre,apellido
+	FROM empleados
+	WHERE empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	nombre = cur.fetchone()
+
 	sql="""SELECT * FROM empleados WHERE empleados.rut ='%s';
 	"""%(rut)
 	cur.execute(sql)
@@ -631,7 +646,8 @@ def home(rut):
 	 top = Top, Topventa=Topventa,Topprecio=Topprecio,tophoras=tophorascompras,
 	 tophorasing=tophorasing,topAsistencia=topAsistencia,rut= rut,numeroClientes=numeroClientes,
 	 ingresoTotal = ingresoTotal,ingresoFumadores=ingresoFumadores,ingresoNoFumadores=ingresoNoFumadores,
-	 numeroClientesfumadores=numeroClientesfumadores,numeroClientesNofumadores=numeroClientesNofumadores,resultadoempleado=resultadoempleado)
+	 numeroClientesfumadores=numeroClientesfumadores,numeroClientesNofumadores=numeroClientesNofumadores,resultadoempleado=resultadoempleado
+	 ,menus=menus)
 
 
 @app.route('/busqueda', methods=["POST","GET"])
@@ -692,6 +708,19 @@ def test(rut):
 @app.route('/ventas/<rut>', methods=["POST","GET"])
 def ventas(rut):
 
+	sql ="""
+	SELECT id_menu
+	FROM menus
+	;
+	"""
+	print sql
+	cur.execute(sql)
+	menus = cur.fetchall()
+
+	sql="""SELECT * FROM empleados"""
+	cur.execute(sql)
+	empleados = cur.fetchall()
+
 	sql="""
 	SELECT admin
 	FROM empleados
@@ -707,4 +736,175 @@ def ventas(rut):
 	cur.execute(sql)
 	nombre = cur.fetchone()
 
-	return render_template("ventas.html",administrador=admin,name = nombre)
+	return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus)
+
+@app.route('/ingreso/<rut>', methods=["POST","GET"])
+def ingreso(rut):
+
+	sql ="""
+	SELECT id_menu
+	FROM menus;
+	"""
+	print sql
+	cur.execute(sql)
+	menus = cur.fetchall()
+
+	sql="""SELECT * FROM empleados"""
+	cur.execute(sql)
+	empleados = cur.fetchall()
+
+	sql="""
+	SELECT admin
+	FROM empleados
+	WHERE empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	admin = cur.fetchone()
+
+	sql="""SELECT nombre,apellido
+	FROM empleados
+	WHERE empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	nombre = cur.fetchone()
+
+	aviso1="No se ingreso producto"
+
+	if request.method == "POST":
+
+		fecha=request.form["fecha"]
+		hora=request.form["hora"]
+		producto=request.form["menu"]
+		cantidad=request.form["cantidad"]
+		menu=request.form["menu"]
+		num_mesa=request.form["mesa"]
+
+		cantidadx = int(cantidad)
+
+		sql="""SELECT *
+		FROM menus
+		WHERE menus.id_menu = '%s';
+		"""%(menu)
+		cur.execute(sql)
+		menuing = cur.fetchone()
+
+		sql="""SELECT *
+		FROM mesas
+		WHERE numero = '%s';
+		"""%(num_mesa)
+		cur.execute(sql)
+		mesaing = cur.fetchone()
+
+		sql="""SELECT cantidad, productos.id_producto
+		FROM menus,llevan,productos
+		WHERE menus.id_menu = '%s'
+		AND menus.id_menu = llevan.menu
+		AND llevan.producto = productos.id_producto;
+		"""%(menu)
+		cur.execute(sql)
+		stockactual = cur.fetchall()
+
+		if fecha == "" or hora =="" or producto =="" or cantidad =="" or menu =="" or num_mesa =="":
+			aviso1="Error, ingreso de datos vacios"
+			return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso1=aviso1,stockactual=stockactual)
+		elif menuing == None :
+			aviso1="Menu inexistente"
+			return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso1=aviso1,stockactual=stockactual)
+		elif mesaing == None :
+			aviso1="Mesa inexistente"
+			return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso1=aviso1,stockactual=stockactual)
+		else :
+			for stock in stockactual:
+				algo = int(stock[0])
+				if algo < cantidadx :
+					aviso1="Fuera de stock"
+					return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso1=aviso1,stockactual=stock,cantidad=cantidadx)
+
+			for stock in stockactual:
+				sql="""UPDATE productos set cantidad ='%s'
+				WHERE id_producto = '%s';
+				"""%(stock[0] - cantidadx , stock[1])
+				cur.execute(sql)
+
+			sql="""INSERT INTO pedidos(cant_atendida , fecha, hora , rut_empleado , num_mesa ,idmenu )
+			VALUES ('%s','%s','%s','%s','%s','%s');
+			"""%(cantidad,fecha,hora,rut,num_mesa,producto)
+			cur.execute(sql)
+
+			aviso1="Venta ingresada"
+		return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso1=aviso1,stockactual=stockactual)
+	return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso1=aviso1,stockactual=stockactual)
+
+@app.route('/reserva/<rut>', methods=["POST","GET"])
+def reserva(rut):
+
+	sql ="""
+	SELECT id_menu
+	FROM menus
+	;
+	"""
+	print sql
+	cur.execute(sql)
+	menus = cur.fetchall()
+
+	sql="""SELECT * FROM empleados"""
+	cur.execute(sql)
+	empleados = cur.fetchall()
+
+	sql="""
+	SELECT admin
+	FROM empleados
+	WHERE empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	admin = cur.fetchone()
+
+	sql="""SELECT nombre,apellido
+	FROM empleados
+	WHERE empleados.rut = '%s'
+	"""%(rut)
+	cur.execute(sql)
+	nombre = cur.fetchone()
+
+	aviso1="No se ingreso producto"
+
+	if request.method == "POST":
+
+		fecha=request.form["fecha"]
+		hora=request.form["hora"]
+		mesa=request.form["mesa"]
+
+
+		sql="""SELECT *
+		FROM reservas
+		WHERE fecha = '%s'
+		AND id_mesa = '%s'
+		AND hora = '%s';
+		"""%(fecha,mesa,hora)
+		cur.execute(sql)
+		reservas = cur.fetchone()
+
+		sql="""SELECT *
+		FROM reservas
+		WHERE id_mesa = '%s';
+		"""%(mesa)
+		cur.execute(sql)
+		mesaing= cur.fetchone()
+
+		aviso2=""
+
+		if fecha == "" or hora =="" or mesa =="" :
+			aviso2="Error, ingreso de datos vacios"
+			return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso2=aviso2)
+		elif mesaing == None :
+			aviso2="Mesa inexistente"
+			return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso2=aviso2)
+		else :
+			sql="""INSERT INTO reservas(id_mesa,fecha,hora)
+			VALUES ('%s','%s','%s');
+			"""%(mesa,fecha,hora)
+			cur.execute(sql)
+
+			aviso2="Reserva ingresada"
+		return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso2=aviso2)
+	return render_template("ventas.html",administrador=admin,name = nombre,rut=rut,empleados=empleados,menus=menus,aviso2=aviso2)
